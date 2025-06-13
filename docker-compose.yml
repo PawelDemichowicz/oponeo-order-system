@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  backend:
+    build: .
+    container_name: oponeo-order-system
+    ports:
+      - "8190:8190"
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    networks:
+      - oponeo-network
+
+  postgresql:
+    image: postgres:17.2
+    container_name: oponeo-database
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: oponeo
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - oponeo-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:
+
+networks:
+  oponeo-network:

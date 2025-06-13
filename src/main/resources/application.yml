@@ -1,0 +1,28 @@
+server:
+  port: 8190
+  servlet:
+    context-path: /oponeo
+
+spring:
+  application:
+    name: oponeo-order-system
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  hikari:
+    minimum-idle: 5
+    maximum-pool-size: 20
+    idle-timeout: 30000
+    max-lifetime: 1800000
+    connection-timeout: 3000
+    leak-detection-threshold: 2000
