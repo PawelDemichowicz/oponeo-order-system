@@ -1,4 +1,4 @@
-package com.oponeo.ordersystem.mapper;
+package com.oponeo.ordersystem.database.mapper;
 
 import com.oponeo.ordersystem.business.domain.OrderItem;
 import com.oponeo.ordersystem.database.entity.OrderItemEntity;

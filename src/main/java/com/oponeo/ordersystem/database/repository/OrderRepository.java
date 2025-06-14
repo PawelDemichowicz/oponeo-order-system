@@ -3,7 +3,7 @@ package com.oponeo.ordersystem.database.repository;
 import com.oponeo.ordersystem.business.domain.Order;
 import com.oponeo.ordersystem.database.entity.OrderEntity;
 import com.oponeo.ordersystem.database.repository.jpa.OrderJpaRepository;
-import com.oponeo.ordersystem.mapper.OrderEntityMapper;
+import com.oponeo.ordersystem.database.mapper.OrderEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
