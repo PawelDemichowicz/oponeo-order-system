@@ -19,6 +19,15 @@ public class OrderItemEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
+    @Column(name = "net_value", nullable = false, precision = 12, scale = 2)
+    private BigDecimal netValue;
+
+    @Column(name = "gross_value", nullable = false, precision = 12, scale = 2)
+    private BigDecimal grossValue;
+
     @EqualsAndHashCode.Include
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", nullable = false)
@@ -29,12 +38,4 @@ public class OrderItemEntity {
     @JoinColumn(name = "order_id", nullable = false)
     private OrderEntity order;
 
-    @Column(name = "quantity", nullable = false)
-    private Integer quantity;
-
-    @Column(name = "net_value", nullable = false, precision = 12, scale = 2)
-    private BigDecimal netValue;
-
-    @Column(name = "gross_value", nullable = false, precision = 12, scale = 2)
-    private BigDecimal grossValue;
 }
