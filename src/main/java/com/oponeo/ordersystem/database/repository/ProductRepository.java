@@ -17,6 +17,11 @@ public class ProductRepository {
     private final ProductJpaRepository productJpaRepository;
     private final ProductEntityMapper productEntityMapper;
 
+    public Product save(Product product) {
+        ProductEntity productToSave = productEntityMapper.mapToEntity(product);
+        return productEntityMapper.mapFromEntity(productJpaRepository.save(productToSave));
+    }
+
     public Optional<Product> findById(Long productId) {
         return productJpaRepository.findById(productId)
                 .map(productEntityMapper::mapFromEntity);
@@ -26,10 +31,5 @@ public class ProductRepository {
         return productJpaRepository.findAllById(productIds).stream()
                 .map(productEntityMapper::mapFromEntity)
                 .toList();
-    }
-
-    public Product save(Product product) {
-        ProductEntity productToSave = productEntityMapper.mapToEntity(product);
-        return productEntityMapper.mapFromEntity(productJpaRepository.save(productToSave));
     }
 }

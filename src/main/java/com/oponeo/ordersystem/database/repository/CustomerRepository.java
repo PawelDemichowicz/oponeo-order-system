@@ -16,13 +16,13 @@ public class CustomerRepository {
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerEntityMapper customerEntityMapper;
 
-    public Optional<Customer> findById(Long customerId) {
-        return customerJpaRepository.findById(customerId)
-                .map(customerEntityMapper::mapFromEntity);
-    }
-
     public Customer save(Customer customer) {
         CustomerEntity customerToSave = customerEntityMapper.mapToEntity(customer);
         return customerEntityMapper.mapFromEntity(customerJpaRepository.save(customerToSave));
+    }
+
+    public Optional<Customer> findById(Long customerId) {
+        return customerJpaRepository.findById(customerId)
+                .map(customerEntityMapper::mapFromEntity);
     }
 }

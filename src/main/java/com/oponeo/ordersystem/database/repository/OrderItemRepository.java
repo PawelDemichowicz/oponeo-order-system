@@ -16,17 +16,17 @@ public class OrderItemRepository {
     private final OrderItemJpaRepository orderItemJpaRepository;
     private final OrderItemEntityMapper orderItemEntityMapper;
 
-    public List<OrderItem> findByOrderId(Long orderId) {
-        return orderItemJpaRepository.findByOrderId(orderId).stream()
-                .map(orderItemEntityMapper::mapFromEntity)
-                .toList();
-    }
-
     public List<OrderItem> saveAll(List<OrderItem> orderItems) {
         List<OrderItemEntity> orderItemsToSave = orderItems.stream()
                 .map(orderItemEntityMapper::mapToEntity)
                 .toList();
         return orderItemJpaRepository.saveAll(orderItemsToSave).stream()
+                .map(orderItemEntityMapper::mapFromEntity)
+                .toList();
+    }
+
+    public List<OrderItem> findByOrderId(Long orderId) {
+        return orderItemJpaRepository.findByOrderId(orderId).stream()
                 .map(orderItemEntityMapper::mapFromEntity)
                 .toList();
     }
