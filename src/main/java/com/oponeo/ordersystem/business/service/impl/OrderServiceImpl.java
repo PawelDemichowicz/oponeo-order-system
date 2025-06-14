@@ -9,6 +9,7 @@ import com.oponeo.ordersystem.business.service.OrderService;
 import com.oponeo.ordersystem.business.service.ProductService;
 import com.oponeo.ordersystem.database.repository.OrderRepository;
 import com.oponeo.ordersystem.exception.NotFoundException;
+import com.oponeo.ordersystem.exception.ProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -36,28 +38,18 @@ public class OrderServiceImpl implements OrderService {
         Customer customer = customerService.getCustomerById(order.getCustomer().getId());
 
         Set<OrderItem> resolvedOrderItems = order.getOrderItems().stream()
-                .map(orderItem -> {
-                    Product product = productService.getProductById(orderItem.getProduct().getId());
-                    return orderItem.withProduct(product);
-                })
+                .map(this::buildOrderItem)
                 .collect(Collectors.toSet());
 
         BigDecimal netTotal = resolvedOrderItems.stream()
-                .map(orderItem ->
-                        orderItem.getProduct().getNetPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())))
+                .map(OrderItem::getNetValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal vatTotal = resolvedOrderItems.stream()
-                .map(orderItem -> {
-                    BigDecimal net = orderItem.getProduct().getNetPrice();
-                    BigDecimal vatRate = orderItem.getProduct().getVatPercent()
-                            .divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
-                    return net.multiply(vatRate).multiply(BigDecimal.valueOf(orderItem.getQuantity()));
-                })
+        BigDecimal grossTotal = resolvedOrderItems.stream()
+                .map(OrderItem::getGrossValue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        BigDecimal grossTotal = netTotal.add(vatTotal);
-
+        validateNoDuplicateProducts(resolvedOrderItems);
         Order orderToSave = buildOrder(customer, resolvedOrderItems, netTotal, grossTotal);
 
         return orderRepository.save(orderToSave);
@@ -75,6 +67,23 @@ public class OrderServiceImpl implements OrderService {
         return "ORD-" + now + "-" + id;
     }
 
+    private OrderItem buildOrderItem(OrderItem orderItem) {
+        Product product = productService.getProductById(orderItem.getProduct().getId());
+
+        BigDecimal quantity = BigDecimal.valueOf(orderItem.getQuantity());
+        BigDecimal netValue = product.getNetPrice().multiply(quantity);
+        BigDecimal grossValue = netValue.multiply(BigDecimal.ONE.add(
+                product.getVatPercent().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP))
+        );
+
+        return OrderItem.builder()
+                .quantity(orderItem.getQuantity())
+                .product(product)
+                .netValue(netValue)
+                .grossValue(grossValue)
+                .build();
+    }
+
     private Order buildOrder(
             Customer customer,
             Set<OrderItem> orderItems,
@@ -90,4 +99,15 @@ public class OrderServiceImpl implements OrderService {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
+
+    private void validateNoDuplicateProducts(Set<OrderItem> orderItems) {
+        Set<Long> existingProductIds = new HashSet<>();
+        for (OrderItem orderItem : orderItems) {
+            Long productId = orderItem.getProduct().getId();
+            if (!existingProductIds.add(productId)) {
+                throw new ProcessingException("Order contains duplicate product id: [%s] ".formatted(productId));
+            }
+        }
+    }
+
 }

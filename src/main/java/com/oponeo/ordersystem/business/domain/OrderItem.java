@@ -16,5 +16,4 @@ public class OrderItem {
     BigDecimal netValue;
     BigDecimal grossValue;
     Product product;
-    Order order;
 }

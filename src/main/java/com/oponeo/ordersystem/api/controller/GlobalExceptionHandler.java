@@ -2,6 +2,7 @@ package com.oponeo.ordersystem.api.controller;
 
 import com.oponeo.ordersystem.api.dto.ExceptionMessage;
 import com.oponeo.ordersystem.exception.NotFoundException;
+import com.oponeo.ordersystem.exception.ProcessingException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Map<Class<?>, HttpStatus> EXCEPTION_STATUS = Map.of(
             IllegalArgumentException.class, HttpStatus.BAD_REQUEST,
+            ProcessingException.class, HttpStatus.BAD_REQUEST,
             EntityNotFoundException.class, HttpStatus.NOT_FOUND,
             NotFoundException.class, HttpStatus.NOT_FOUND
     );

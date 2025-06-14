@@ -39,7 +39,7 @@ public class OrderEntity {
     @JoinColumn(name = "customer_id", nullable = false)
     private CustomerEntity customer;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     private Set<OrderItemEntity> orderItems = new HashSet<>();
 }
