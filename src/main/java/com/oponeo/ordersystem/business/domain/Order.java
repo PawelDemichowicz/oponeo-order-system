@@ -21,6 +21,6 @@ public class Order {
     BigDecimal grossValue;
     Customer customer;
 
-    @Singular("item")
+    @Singular
     Set<OrderItem> orderItems;
 }
