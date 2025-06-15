@@ -71,10 +71,10 @@ public class OrderServiceImpl implements OrderService {
         Product product = productService.getProductById(orderItem.getProduct().getId());
 
         BigDecimal quantity = BigDecimal.valueOf(orderItem.getQuantity());
-        BigDecimal netValue = product.getNetPrice().multiply(quantity);
+        BigDecimal netValue = product.getNetPrice().multiply(quantity).setScale(2, RoundingMode.HALF_UP);
         BigDecimal grossValue = netValue.multiply(BigDecimal.ONE.add(
-                product.getVatPercent().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP))
-        );
+                        product.getVatPercent().divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP)))
+                .setScale(2, RoundingMode.HALF_UP);
 
         return OrderItem.builder()
                 .quantity(orderItem.getQuantity())

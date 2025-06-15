@@ -10,7 +10,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(
         componentModel = "spring",
         uses = {CustomerDtoMapper.class, OrderItemDtoMapper.class},
-        unmappedTargetPolicy = ReportingPolicy.WARN
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public interface OrderDtoMapper {
 

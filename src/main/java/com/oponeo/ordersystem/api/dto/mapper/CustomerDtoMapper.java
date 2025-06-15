@@ -6,7 +6,7 @@ import com.oponeo.ordersystem.business.domain.Customer;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface CustomerDtoMapper {
 
     Customer mapFromRequestDto(CustomerRequestDto dto);
