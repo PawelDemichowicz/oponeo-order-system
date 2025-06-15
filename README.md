@@ -33,20 +33,6 @@ Once the application is running, access Swagger UI at:
 http://localhost:8190/oponeo/swagger-ui/index.html
 ```
 
-## 🚀 Run & Test
-
-This project is structured as a Spring Boot application using the Gradle build system.
-
-```bash
-./gradlew clean build
-./gradlew bootRun
-```
-
-Run tests:
-
-```bash
-./gradlew test
-```
 ## 🐳 Run with Docker
 
 To run the application using Docker (along with a PostgreSQL database):
@@ -83,6 +69,15 @@ DB_PASSWORD=your_password
 ### 4. Stop the containers
 ```bash
 docker compose down
+```
+
+## 🧪 Running Tests
+
+This project includes both unit and integration tests.
+
+To run all tests:
+```bash
+./gradlew test
 ```
 
 ---
