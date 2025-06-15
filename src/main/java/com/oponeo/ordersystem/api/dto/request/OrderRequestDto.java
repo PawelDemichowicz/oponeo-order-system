@@ -1,5 +1,7 @@
 package com.oponeo.ordersystem.api.dto.request;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
@@ -12,6 +14,8 @@ public record OrderRequestDto(
         Long customerId,
 
         @NotNull
+        @NotEmpty
+        @Valid
         List<OrderItemRequestDto> orderItems
 ) {
 }

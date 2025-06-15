@@ -11,6 +11,7 @@ import com.oponeo.ordersystem.database.repository.OrderRepository;
 import com.oponeo.ordersystem.exception.NotFoundException;
 import com.oponeo.ordersystem.exception.ProcessingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
@@ -35,6 +37,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order placeOrder(Order order) {
+        log.info("Creating order for customer ID: {}", order.getCustomer().getId());
+
         Customer customer = customerService.getCustomerById(order.getCustomer().getId());
 
         Set<OrderItem> resolvedOrderItems = order.getOrderItems().stream()
@@ -50,7 +54,9 @@ public class OrderServiceImpl implements OrderService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         validateNoDuplicateProducts(resolvedOrderItems);
+
         Order orderToSave = buildOrder(customer, resolvedOrderItems, netTotal, grossTotal);
+        log.info("Generated order number: {}", orderToSave.getOrderNumber());
 
         return orderRepository.save(orderToSave);
     }
@@ -109,5 +115,4 @@ public class OrderServiceImpl implements OrderService {
             }
         }
     }
-
 }

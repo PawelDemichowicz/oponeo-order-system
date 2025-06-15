@@ -17,10 +17,10 @@ public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     @Column(name = "id")
     private Long id;
 
-    @EqualsAndHashCode.Include
     @Column(name = "name", nullable = false, unique = true, length = 150)
     private String name;
 
