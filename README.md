@@ -37,24 +37,7 @@ http://localhost:8190/oponeo/swagger-ui/index.html
 
 To run the application using Docker (along with a PostgreSQL database):
 
-### 1. Build the Docker image
-```bash
-./gradlew bootJar
-docker build -t oponeo-order-system .
-```
-
-### 2. Run with Docker Compose
-Make sure you have `docker-compose.yml` configured. Then run:
-
-```bash
-docker compose up
-```
-
-This will start:
-- the Spring Boot application on `localhost:8190`
-- a PostgreSQL database container
-
-### 3. Environment Configuration
+### 1. Environment Configuration
 
 Create a `.env` file in the project root with the following content:
 
@@ -65,6 +48,23 @@ DB_PASSWORD=your_password
 ```
 
 > These variables are used by `application.yml` to connect to the database container defined in `docker-compose.yml`.
+
+### 2. Build the Docker image
+```bash
+./gradlew bootJar
+docker build -t oponeo-order-system .
+```
+
+### 3. Run with Docker Compose
+Make sure you have `docker-compose.yml` configured. Then run:
+
+```bash
+docker compose up
+```
+
+This will start:
+- the Spring Boot application on `localhost:8190`
+- a PostgreSQL database container
 
 ### 4. Stop the containers
 ```bash
