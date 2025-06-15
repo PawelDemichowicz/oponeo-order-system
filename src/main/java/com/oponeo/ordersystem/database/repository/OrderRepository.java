@@ -2,10 +2,10 @@ package com.oponeo.ordersystem.database.repository;
 
 import com.oponeo.ordersystem.business.domain.Order;
 import com.oponeo.ordersystem.database.entity.OrderEntity;
+import com.oponeo.ordersystem.database.mapper.OrderEntityMapper;
 import com.oponeo.ordersystem.database.mapper.OrderItemEntityMapper;
 import com.oponeo.ordersystem.database.repository.jpa.OrderItemJpaRepository;
 import com.oponeo.ordersystem.database.repository.jpa.OrderJpaRepository;
-import com.oponeo.ordersystem.database.mapper.OrderEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -36,13 +36,12 @@ public class OrderRepository {
         return orderEntityMapper.mapFromEntity(orderSaved);
     }
 
-    public Optional<Order> findById(Long orderId) {
-        return orderJpaRepository.findById(orderId)
-                .map(orderEntityMapper::mapFromEntity);
-    }
-
     public Optional<Order> findByOrderNumber(String orderNumber) {
         return orderJpaRepository.findByOrderNumber(orderNumber)
                 .map(orderEntityMapper::mapFromEntity);
+    }
+
+    public void deleteAll() {
+        orderJpaRepository.deleteAll();
     }
 }

@@ -2,8 +2,8 @@ package com.oponeo.ordersystem.database.repository;
 
 import com.oponeo.ordersystem.business.domain.Customer;
 import com.oponeo.ordersystem.database.entity.CustomerEntity;
-import com.oponeo.ordersystem.database.repository.jpa.CustomerJpaRepository;
 import com.oponeo.ordersystem.database.mapper.CustomerEntityMapper;
+import com.oponeo.ordersystem.database.repository.jpa.CustomerJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -24,5 +24,9 @@ public class CustomerRepository {
     public Optional<Customer> findById(Long customerId) {
         return customerJpaRepository.findById(customerId)
                 .map(customerEntityMapper::mapFromEntity);
+    }
+
+    public void deleteAll() {
+        customerJpaRepository.deleteAll();
     }
 }
