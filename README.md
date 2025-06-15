@@ -30,7 +30,7 @@ This is a recruitment project for Oponeo — a backend system for managing custo
 Once the application is running, access Swagger UI at:
 
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:8190/oponeo/swagger-ui/index.html
 ```
 
 ## 🚀 Run & Test
