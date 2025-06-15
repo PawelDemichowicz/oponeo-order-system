@@ -135,6 +135,8 @@ class OrderServiceImplTest {
         when(productService.getProductById(productId)).thenReturn(product);
 
         // when & then
+        assertEquals(2, order.getOrderItems().size(), "Order should contain 2 items before processing");
+
         Throwable exception = assertThrows(ProcessingException.class,
                 () -> orderService.placeOrder(order));
         assertEquals("Order contains duplicate product id: [%s] ".formatted(productId),

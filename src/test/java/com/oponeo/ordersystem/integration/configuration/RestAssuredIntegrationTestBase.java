@@ -6,19 +6,12 @@ import io.restassured.config.ObjectMapperConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class RestAssuredIntegrationTestBase extends AbstractIT {
 
     @Autowired
     protected ObjectMapper objectMapper;
-
-    @Test
-    void contextLoaded() {
-        Assertions.assertThat(true).isTrue();
-    }
 
     public RequestSpecification requestSpecification() {
         return restAssuredBase()
